@@ -1,0 +1,19 @@
+DEFINE_UI_PARAMS(cx, Center X, DCTLUI_SLIDER_FLOAT, 0.5, 0.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(cy, Center Y, DCTLUI_SLIDER_FLOAT, 0.45, 0.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(rx, Radius X, DCTLUI_SLIDER_FLOAT, 0.28, 0.01, 1.0, 0.001)
+DEFINE_UI_PARAMS(ry, Radius Y, DCTLUI_SLIDER_FLOAT, 0.42, 0.01, 1.0, 0.001)
+DEFINE_UI_PARAMS(soft, Softness, DCTLUI_SLIDER_FLOAT, 0.35, 0.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(inGain, Inside Gain, DCTLUI_SLIDER_FLOAT, 1.12, 0.0, 2.0, 0.001)
+DEFINE_UI_PARAMS(outGain, Outside Gain, DCTLUI_SLIDER_FLOAT, 0.55, 0.0, 2.0, 0.001)
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B)
+{
+    float u = (float)p_X / (float)p_Width;
+    float v = (float)p_Y / (float)p_Height;
+    float dx = (u - cx) / rx;
+    float dy = (v - cy) / ry;
+    float d = _sqrtf(dx * dx + dy * dy);
+    float m = 1.0f - _saturatef((d - (1.0f - soft)) / _fmaxf(soft, 0.0001f));
+    float g = outGain + (inGain - outGain) * m;
+    return make_float3(p_R * g, p_G * g, p_B * g);
+}

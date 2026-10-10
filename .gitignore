@@ -1,0 +1,5 @@
+examples/media/
+examples/out/
+.DS_Store
+__pycache__/
+examples/media_photos/

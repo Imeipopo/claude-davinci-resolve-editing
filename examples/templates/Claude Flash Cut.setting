@@ -1,0 +1,81 @@
+{
+	Tools = ordered() {
+		ClaudeFlashCut = GroupOperator {
+			Inputs = ordered() {
+				MainInput1 = InstanceInput { SourceOp = "Mix", Source = "Background", },
+				MainInput2 = InstanceInput { SourceOp = "Mix", Source = "Foreground", },
+				FlashStrength = InstanceInput { SourceOp = "Flash", Source = "Gain", Name = "Flash Strength", Default = 1, MinScale = 0, MaxScale = 1, },
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput { SourceOp = "Flash", Source = "Output", },
+			},
+			ViewInfo = GroupInfo { Pos = { 0, 0 } },
+			Tools = ordered() {
+				Mix = Dissolve {
+					Inputs = {
+						Operation = Input { Value = FuID { "DFTDissolve" }, },
+						Mix = Input { SourceOp = "Progress", Source = "Value", },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 0 } },
+				},
+				White = Background {
+					Inputs = {
+						Width = Input { Value = 1920, },
+						Height = Input { Value = 1080, },
+						TopLeftRed = Input { Value = 1, },
+						TopLeftGreen = Input { Value = 1, },
+						TopLeftBlue = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 0, 50 } },
+				},
+				Flash = Merge {
+					Inputs = {
+						Background = Input { SourceOp = "Mix", Source = "Output", },
+						Foreground = Input { SourceOp = "White", Source = "Output", },
+						Blend = Input { SourceOp = "Peak", Source = "Value", },
+						Gain = Input { Value = 1, },
+					},
+					ViewInfo = OperatorInfo { Pos = { 110, 0 } },
+				},
+				Progress = LUTLookup {
+					Inputs = {
+						Source = Input { Value = FuID { "Duration" }, },
+						Curve = Input { Value = FuID { "Easing" }, },
+						EaseIn = Input { Value = FuID { "Linear" }, },
+						EaseOut = Input { Value = FuID { "Linear" }, },
+						Lookup = Input { SourceOp = "ProgressLookup", Source = "Value", },
+					},
+				},
+				ProgressLookup = LUTBezier {
+					KeyColorSplines = {
+						[0] = {
+							[0] = { 0, RH = { 0.333333333333333, 0.333333333333333 }, Flags = { Linear = true } },
+							[1] = { 1, LH = { 0.666666666666667, 0.666666666666667 }, Flags = { Linear = true } }
+						}
+					},
+					SplineColor = { Red = 255, Green = 255, Blue = 255 },
+				},
+				Peak = LUTLookup {
+					Inputs = {
+						Source = Input { Value = FuID { "Duration" }, },
+						Curve = Input { Value = FuID { "Custom" }, },
+						EaseIn = Input { Value = FuID { "Linear" }, },
+						EaseOut = Input { Value = FuID { "Linear" }, },
+						Lookup = Input { SourceOp = "PeakLookup", Source = "Value", },
+					},
+				},
+				PeakLookup = LUTBezier {
+					KeyColorSplines = {
+						[0] = {
+							[0] = { 0, RH = { 0.166666666666667, 0.333333333333333 }, Flags = { Linear = true } },
+							[0.5] = { 1, LH = { 0.333333333333333, 0.666666666666667 }, RH = { 0.666666666666667, 0.666666666666667 }, Flags = { Linear = true } },
+							[1] = { 0, LH = { 0.833333333333333, 0.333333333333333 }, Flags = { Linear = true } }
+						}
+					},
+					SplineColor = { Red = 255, Green = 255, Blue = 255 },
+				},
+			},
+		},
+	},
+	ActiveTool = "ClaudeFlashCut",
+}

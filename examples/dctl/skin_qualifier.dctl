@@ -1,0 +1,24 @@
+DEFINE_UI_PARAMS(hueC, Hue Center, DCTLUI_SLIDER_FLOAT, 0.06, 0.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(hueW, Hue Width, DCTLUI_SLIDER_FLOAT, 0.06, 0.0, 0.5, 0.001)
+DEFINE_UI_PARAMS(satMin, Sat Min, DCTLUI_SLIDER_FLOAT, 0.12, 0.0, 1.0, 0.001)
+DEFINE_UI_PARAMS(outSat, Outside Saturation, DCTLUI_SLIDER_FLOAT, 0.0, 0.0, 2.0, 0.001)
+
+__DEVICE__ float3 transform(int p_Width, int p_Height, int p_X, int p_Y, float p_R, float p_G, float p_B)
+{
+    float mx = _fmaxf(p_R, _fmaxf(p_G, p_B));
+    float mn = _fminf(p_R, _fminf(p_G, p_B));
+    float c = mx - mn;
+    float s = mx > 0.0f ? c / mx : 0.0f;
+    float h = 0.0f;
+    if (c > 0.0f) {
+        if (mx == p_R) h = _fmod((p_G - p_B) / c + 6.0f, 6.0f);
+        else if (mx == p_G) h = (p_B - p_R) / c + 2.0f;
+        else h = (p_R - p_G) / c + 4.0f;
+        h /= 6.0f;
+    }
+    float dh = _fabs(h - hueC); dh = _fminf(dh, 1.0f - dh);
+    float m = (1.0f - _saturatef(dh / _fmaxf(hueW, 0.0001f))) * _saturatef((s - satMin) / 0.05f);
+    float l = 0.2126f * p_R + 0.7152f * p_G + 0.0722f * p_B;
+    float k = outSat + (1.0f - outSat) * m;
+    return make_float3(l + (p_R - l) * k, l + (p_G - l) * k, l + (p_B - l) * k);
+}
