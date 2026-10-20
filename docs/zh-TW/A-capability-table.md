@@ -57,6 +57,11 @@ macOS 27.0.1／Resolve Studio 21.1.0.14。「實測」＝本 repo 輸出影片�
 | 遮罩、選色（程式產生） | 繞路 | DCTL | 14 | 實測 |
 | 可拖曳、會追蹤的 Power Window | 不能（直接） | 畫面做一次存 .drx 再用程式套用；或 sg 離線寫 .drx | 15 | 實測（做法 B） |
 | Magic Mask | 不能（直接） | CGEvent 滑鼠自動點選＋追蹤 | 15.3、19.6 | 實測 |
+| Power Window 追蹤 | 不能（直接） | CGEvent 畫窗口＋按追蹤；調色用 `SetCDL` | 21.8 | 實測 |
+| AI 面部修飾 | 不能（直接） | CGEvent 拖到節點、偵測、追蹤 | 21.5 | 實測 |
+| Super Scale | 能 | `MediaPoolItem.SetClipProperty("Super Scale", ...)` | 21.1 | 實測 |
+| HDR 輸出 | 能 | 專案色彩設定＋H.265 Main10 | 21.6 | 實測 |
+| 立體 3D 片段 | 能 | `CreateStereoClip`（會換掉輸入片段） | 21.7 | 實測 |
 
 ## 專案與輸出
 
@@ -71,3 +76,6 @@ macOS 27.0.1／Resolve Studio 21.1.0.14。「實測」＝本 repo 輸出影片�
 | 匯出／匯入時間軸 | 能 | `Export`／`ImportTimelineFromFile` | 9 | 實測 |
 | 從音樂抓切點 | Resolve 外做 | librosa＋分軌 | 16 | 實測＋經驗 |
 | 點畫面（必要時） | 能 | CGEvent 模擬滑鼠（AppleScript 的 click at 不可靠） | 1.11 | 實測 |
+| Speed Warp 慢動作 | 能 | `RetimeProcess`＋`MotionEstimation`，`SetSpeed` 要 `RippleTimeline` | 21.2 | 實測 |
+| 人聲分離 | 能 | `AudioVoiceIsolationEnabled`／`Amount` | 21.3 | 實測 |
+| Fairlight FX（降噪、殘響…） | 不能（直接） | CGEvent 從特效庫拖到片段 | 21.4 | 實測 |

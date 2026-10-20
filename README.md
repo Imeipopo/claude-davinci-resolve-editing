@@ -38,6 +38,7 @@
 | [18](docs/zh-TW/18-verification.md) | 怎麼驗證做對了 | 完成 |
 | [19](docs/zh-TW/19-beyond-limits.md) | 「API 做不到」重測：音量音高、剃刀切段、讀回轉場、字幕 | 完成 |
 | [20](docs/zh-TW/20-intro-generator.md) | 用程式產生片頭（Remotion）再接進 Resolve：隨機產生器、提示詞模板、透明背景疊加 | 完成 |
+| [21](docs/zh-TW/21-studio-ai.md) | Studio 版限定功能實測：Super Scale、Speed Warp、人聲分離、Fairlight FX、面部修飾、HDR、3D、窗口追蹤 | 完成 |
 | [A](docs/zh-TW/A-capability-table.md) | 能做／不能做總表 | 完成 |
 | [B](docs/zh-TW/B-pitfalls.md) | 踩雷清單 | 完成 |
 | [C](docs/zh-TW/C-references.md) | 參考資源與授權 | 完成 |
