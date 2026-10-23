@@ -23,6 +23,7 @@ Evidence and examples: `docs/zh-TW/` (Chinese, primary) and `docs/en/`. Chapter 
 - Timeline start = 01:00:00:00 = frame 108000 at 30 fps. `recordFrame` is absolute: `tl.GetStartFrame() + offset`.
 - `AppendToTimeline` `endFrame` is exclusive.
 - Stills ignore the requested length and land as 150 frames. Convert each still to a video first (`ffmpeg -i x.jpg -vf "loop=loop=239:size=1:start=0,fps=30,format=yuv420p" -frames:v 240 -c:v libx264 -crf 18 -r 30 x.mp4`).
+  Non-16:9 stills leave dead borders: build a blurred fill in the same pass (`[0]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,gblur=sigma=30,eq=brightness=-0.1[bg];[0]scale=1920:1080:force_original_aspect_ratio=decrease[fg];[bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1,loop=...`; full command in 2.6).
 - Purely numeric file names (`1001.png`, `1002.png`) import as one image-sequence clip. Prefix them.
 - `SetSetting("timelineFrameRate")` only works before the project has a timeline; `timelinePlaybackFrameRate` always returns False (render rate follows the timeline rate anyway). Read settings back with `GetSetting`.
 - Render: deliver page → `DeleteAllRenderJobs` → `SetCurrentRenderFormatAndCodec("mp4","H264")` → `SetRenderSettings` → `AddRenderJob` → `StartRendering` → poll `IsRenderingInProgress`. Judge success by `CompletionPercentage == 100`; `JobStatus` is a localized string.
@@ -94,6 +95,17 @@ Evidence and examples: `docs/zh-TW/` (Chinese, primary) and `docs/en/`. Chapter 
 - Overlays: `--alpha` writes ProRes 4444 with alpha; `AddTrack("video")` before appending to V2 (without it the append reports no failure but the overlay never shows).
 - After re-rendering a file under the same name, delete the old media-pool clip (and timelines using it) and re-import; otherwise the render can fail partway (`JobStatus: Failed`). Or change the file name.
 - `prompts/third-party/` belongs to the original prompt authors, not this repo's MIT license.
+
+## Delivery checks (ch 16.10, 18.7, 19.15)
+
+- Before handing a render over, run `python3 examples/tools/delivery_qa.py out.mp4` (loudness/true peak, A/V length, tail fade, frozen-and-silent dead air, black flashes, letterbox/pillarbox). Exit code 1 = FAIL. A frozen picture alone is fine (photo slideshows); only frozen + silent is dead air. A 1-frame gap in a Resolve timeline renders as a 1-frame black flash.
+- Beat edits: `examples/tools/cut_check.py out.mp4 cuts.json --key kick` compares detected hard cuts with the plan, ±1 frame. Dissolves are not detected as cuts.
+- Captions: `examples/tools/caption_qa.py captions.srt --media out.mp4 [--asr N]`. The ASR spot-check (whisper-cli) is for speech only, never for lyric timing; pass a Traditional-Chinese prompt or zh comes back simplified. Reading-speed limits (5/7 chars/s) are unverified starter values.
+
+## Jump cuts (ch 22)
+
+- `22_jumpcut.py`: silencedetect on a dry voice track -> keep ranges (pad each pause) -> new timeline `<name>_vN`, one `AppendToTimeline` dict per kept range with absolute `recordFrame` and no `mediaType` (video and audio land linked) -> remap the .srt with the same ranges -> render -> check frame count, first/last frame of each segment, and that no long pause remains.
+- Do not overwrite a source file under the same name: the stale pool clip made the render fail at 28%, and after delete + re-import from the same path the render silently lost its audio after 3.4 s. Use a new file name per version.
 
 ## Status of later chapters
 

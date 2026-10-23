@@ -33,12 +33,13 @@
 | [13](docs/zh-TW/13-color.md) | 調色：CDL、自製 LUT、調色存檔 | 完成 |
 | [14](docs/zh-TW/14-dctl.md) | DCTL：自己寫遮罩與選色 | 完成 |
 | [15](docs/zh-TW/15-power-windows.md) | Power Window 與限定器 | 完成 |
-| [16](docs/zh-TW/16-beat-sync.md) | 卡點：拆音樂、抓鼓點與人聲、對拍 | 完成 |
+| [16](docs/zh-TW/16-beat-sync.md) | 卡點：拆音樂、抓鼓點與人聲、對拍、輸出後驗切點 | 完成 |
 | [17](docs/zh-TW/17-case-study.md) | 完整案例：照參考影片做照片卡點快剪 | 完成 |
-| [18](docs/zh-TW/18-verification.md) | 怎麼驗證做對了 | 完成 |
-| [19](docs/zh-TW/19-beyond-limits.md) | 「API 做不到」重測：音量音高、剃刀切段、讀回轉場、字幕 | 完成 |
+| [18](docs/zh-TW/18-verification.md) | 怎麼驗證做對了、交片前整支檢查 | 完成 |
+| [19](docs/zh-TW/19-beyond-limits.md) | 「API 做不到」重測：音量音高、剃刀切段、讀回轉場、字幕與字幕檢查 | 完成 |
 | [20](docs/zh-TW/20-intro-generator.md) | 用程式產生片頭（Remotion）再接進 Resolve：隨機產生器、提示詞模板、透明背景疊加 | 完成 |
 | [21](docs/zh-TW/21-studio-ai.md) | Studio 版限定功能實測：Super Scale、Speed Warp、人聲分離、Fairlight FX、面部修飾、HDR、3D、窗口追蹤 | 完成 |
+| [22](docs/zh-TW/22-jumpcut.md) | 跳剪：自動剪掉說話的停頓、字幕跟著平移 | 完成 |
 | [A](docs/zh-TW/A-capability-table.md) | 能做／不能做總表 | 完成 |
 | [B](docs/zh-TW/B-pitfalls.md) | 踩雷清單 | 完成 |
 | [C](docs/zh-TW/C-references.md) | 參考資源與授權 | 完成 |
@@ -56,7 +57,7 @@ cd claude-davinci-resolve-editing/examples
 
 ## 致謝與來源
 
-本教學整合了 [samuelgursky/davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp)（MIT）的大量知識，內容以本教學的話重新整理並標明出處；**需要現成的 MCP 工具請直接使用該專案**。授權聲明見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
+本教學整合了 [samuelgursky/davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp)（MIT）的大量知識，內容以本教學的話重新整理並標明出處；**需要現成的 MCP 工具請直接使用該專案**。交片檢查、跳剪、字幕檢查的想法整理自 [Hao0321/video-autopilot-kit](https://github.com/Hao0321/video-autopilot-kit)（MIT），程式為本 repo 重寫。授權聲明見 [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 ## 授權
 

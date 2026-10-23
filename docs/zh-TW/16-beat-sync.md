@@ -1,7 +1,7 @@
 # 第 16 章　卡點：從音樂找切點
 
 > 英文版：[docs/en/16-beat-sync.md](../en/16-beat-sync.md)
-> 範例：[examples/16_beats.py](../../examples/16_beats.py)（在一般 venv 執行，不是 ResolvePython）
+> 範例：[examples/16_beats.py](../../examples/16_beats.py)（在一般 venv 執行，不是 ResolvePython）；輸出後對拍：[examples/tools/cut_check.py](../../examples/tools/cut_check.py)（16.10）
 
 本章分兩種來源：
 
@@ -75,3 +75,26 @@ audio-separator song.wav -m htdemucs_ft.yaml --output_dir stems
 frames = [round(t * 30) for t in cuts["kick"]]
 segments = [{"start": a, "dur": b - a} for a, b in zip(frames, frames[1:])]
 ```
+
+### 16.10 輸出後對拍：`cut_check.py`
+
+- 結論：計畫裡的切點和輸出影片裡的切點要逐一比。`examples/tools/cut_check.py` 用 ffmpeg 的場景分數（`select='gt(scene,0.3)',showinfo`）抓出影片裡每個硬切的第一格，和計畫比對，容許 ±1 格，列出**漏掉**、**偏早／偏晚**、**計畫外多出來**的切點。漏掉或偏移就 FAIL（exit code 1），多出來的是 WARN。
+- 驗證：本 repo 實測通過｜macOS 27.0.1／Resolve Studio 21.1.0.14／ffmpeg 8.1.2／2026-10-23。跑 `16_beats.py` 得到 `cuts.json` 的 10 個大鼓時間，換算成格數（89、104、119…224），在 Resolve 照這些格數交替放四段不同的片段、輸出，再檢查：
+  - 照原計畫：10 個切點全部 0 格誤差，PASS。切點的場景分數 0.40～0.60，非切點最高 0.00075，0.3 的門檻兩邊都很遠。
+  - 計畫裡一個切點故意晚 2 格：FAIL「早了 2 格」。
+  - 計畫少寫一個：WARN「多出 5.467 秒」。
+  - 計畫多寫一個不存在的（5.2 秒）：FAIL「漏掉 5.2 秒」，其他 10 個仍判正確。
+- 做法：
+
+```bash
+python3 examples/tools/cut_check.py out.mp4 examples/out/cuts.json --key kick     # 16_beats.py 的輸出
+python3 examples/tools/cut_check.py out.mp4 plan.json                              # 16.9 的 [{"start": 格數, "dur": ...}]
+python3 examples/tools/cut_check.py out.mp4 times.json --offset 2.0                # 歌從影片第 2 秒才開始
+```
+
+  計畫可以是秒數清單（`--frames` 表示是格數）、`cuts.json`（用 `--key` 選哪一軌）、或 16.9 的分段計畫。秒數一律用 `round(t * fps)` 換格（16.5）。
+- 雷：配對要分兩輪——先配 ±1 格內的，剩下的再找 0.5 秒內最近的。只做一輪「找最近的」時，計畫多寫一個切點，就會搶走隔壁的偵測結果，後面 5 個全部被誤判成晚 15 格（實測過）。
+- 只抓硬切：溶解轉場的場景分數每格都很低，會被當成「漏掉」。有溶解的段落只看硬切的那幾個，或用 18.2 截格看。
+- 選用：`--max-shot "0-30:7,30-180:15,180-:30"` 檢查「每一段最長的鏡頭不超過幾秒」（前 30 秒 7 秒、30 秒到 3 分鐘 15 秒、之後 30 秒）。這組數字是整理自 Hao0321 的**起始值，未驗證**，只會給 WARN；卡點影片通常遠短於此。
+
+> 人類補充：分析算出來的切點、Resolve 時間軸上的切點、輸出檔裡的切點，三個要一致才算卡到拍。這支工具檢查的是最後一個——觀眾真正看到的。

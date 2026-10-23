@@ -15,6 +15,7 @@
   - [docs/guides/native-drt-authoring.md](https://github.com/samuelgursky/davinci-resolve-mcp/blob/main/docs/guides/native-drt-authoring.md)：離線寫 .drt
   - [docs/guides/headless-edit-loop.md](https://github.com/samuelgursky/davinci-resolve-mcp/blob/main/docs/guides/headless-edit-loop.md)：各交換格式保留什麼
   - [docs/authoring/setting-files/](https://github.com/samuelgursky/davinci-resolve-mcp/tree/main/docs/authoring/setting-files)：.setting 模板撰寫
+- [Hao0321/video-autopilot-kit](https://github.com/Hao0321/video-autopilot-kit)（MIT）：用 ffmpeg 產生與檢查影片的工具組。本教學引用的版本：commit `a50c73bde0c5bcb5b82e4d28f812e780e20cb1a7`。交片檢查（18.7）、切點與鏡頭長度（16.10）、字幕讀速與抽聽（19.15）、跳剪（22）、模糊填底（2.6）的想法與起始門檻整理自它，程式為本 repo 重寫；它文件中引用的第三方網站數據本教學沒有採用。
 - 其他相關 repo（未實測）：[lordhoell/davinci-resolve-mcp](https://github.com/lordhoell/davinci-resolve-mcp)、[wassermanproductions/unofficial-davinci-mcp](https://github.com/wassermanproductions/unofficial-davinci-mcp)（含免費版可用的 FCPXML 路線與卡拍工具）、[deetisdale/davinci-resolve-automation](https://github.com/deetisdale/davinci-resolve-automation)（照片卡點）。
 
 ## 片頭（第 20 章）
@@ -40,5 +41,6 @@
 
 - 本 repo：MIT（[LICENSE](../../LICENSE)）。
 - 引用 samuelgursky/davinci-resolve-mcp 的內容：MIT，版權聲明見 [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)。
+- 整理自 Hao0321/video-autopilot-kit 的內容：MIT，版權聲明見 [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)。
 - `prompts/third-party/` 的提示詞中譯：版權屬各原作者，不適用本 repo 的 MIT，見 [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)。
 - DaVinci Resolve、Fusion 為 Blackmagic Design 的商標；本 repo 與 Blackmagic Design 無關。

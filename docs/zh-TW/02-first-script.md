@@ -78,6 +78,17 @@ ffmpeg -i photo.jpg -vf "loop=loop=239:size=1:start=0,fps=30,format=yuv420p" \
 ```
 
 - 不要：用 `-loop 1` 讀大張照片再輸出，速度慢很多（作者實測約十倍）。
+- 不是 16:9 的照片（直幅、3:2）：直接放會留黑邊。轉影片時順便做「模糊填底」——同一張圖放大、模糊、稍微調暗當背景，原圖完整置中疊上去：
+
+```bash
+ffmpeg -i photo.jpg -filter_complex \
+  "[0]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,gblur=sigma=30,eq=brightness=-0.1[bg];\
+   [0]scale=1920:1080:force_original_aspect_ratio=decrease[fg];\
+   [bg][fg]overlay=(W-w)/2:(H-h)/2,setsar=1,loop=loop=239:size=1:start=0,fps=30,format=yuv420p" \
+  -frames:v 240 -c:v libx264 -crf 18 -r 30 photo.mp4
+```
+
+- 驗證：整理自 Hao0321（模糊填底的做法），本 repo 已實測｜ffmpeg 8.1.2／2026-10-23：直幅 1080×1920 與 3:2 3240×2160 的測試圖各轉成 240 格 1920×1080 影片，各 0.5 秒；18.7 的黑邊檢查 PASS。同樣的圖只縮放、補黑邊的版本，黑邊檢查 FAIL（左右 656 px、150 px）。背景是靜止的，沒有用 zoompan，所以不會抖。
 
 > 人類補充：卡點影片每張照片只停零點幾秒，所以一定要轉成影片；轉成 8 秒長的影片後，想放幾格就放幾格。
 

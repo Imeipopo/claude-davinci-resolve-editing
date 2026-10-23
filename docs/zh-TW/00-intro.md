@@ -42,6 +42,7 @@
 | **實測失敗** | 照做不行，寫出失敗的樣子和替代做法 |
 | **整理自 samuelgursky，本 repo 已實測** | 他的說法，我們在 21.1 重測過，結果一致 |
 | **整理自 samuelgursky，未實測** | 照錄他的說法與他測的版本，本 repo 沒有重測 |
+| **整理自 Hao0321** | 想法或起始門檻來自 [Hao0321/video-autopilot-kit](https://github.com/Hao0321/video-autopilot-kit)（MIT），程式為本 repo 重寫；有沒有實測逐條標明 |
 | **官方文件，未實測** | 只出自 Blackmagic 官方文件 |
 
 ## 0.4 為什麼「輸出驗證」很重要

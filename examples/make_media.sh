@@ -65,6 +65,39 @@ ffmpeg -v error -y -i "$M/voice_clean.wav" -f lavfi -i "anoisesrc=color=pink:amp
 ffmpeg -v error -y -f lavfi -i "testsrc2=s=1944x1080:r=30:d=4" -vf "crop=1920:1080:0:0,format=yuv420p" -c:v libx264 -crf 14 "$M/eye_left.mp4"
 ffmpeg -v error -y -f lavfi -i "testsrc2=s=1944x1080:r=30:d=4" -vf "crop=1920:1080:24:0,format=yuv420p" -c:v libx264 -crf 14 "$M/eye_right.mp4"
 
+# Chapter 22 (jump cuts): a "talking head" stand-in. Five Mandarin sentences (macOS say) separated by pauses of
+# 0.2 / 1.5 / 2.5 / 0.9 s (say adds ~0.2 s of its own), 1 s of silence before and 1.2 s after. The picture carries
+# its own frame number as 11 white/black blocks along the top (block k = bit k), so a render can be read back
+# frame by frame. talk_src.srt holds the exact sentence times.
+TALK=("大家好，今天示範自動剪掉停頓。" "第一段話講完會停一下。" "這裡停了比較久，應該被剪掉。" "短的換氣要留著，聽起來才自然。" "最後一句，謝謝收看。")
+GAPS=(1.0 0.2 1.5 2.5 0.9 1.2)
+parts=() srt="" t=0 n=0
+for k in "${!TALK[@]}"; do
+  say -v Meijia -o "$M/_talk_$k.aiff" "${TALK[$k]}"
+  ffmpeg -v error -y -f lavfi -i "anullsrc=r=48000:cl=mono" -t "${GAPS[$k]}" "$M/_gap_$k.wav"
+  ffmpeg -v error -y -i "$M/_talk_$k.aiff" -ar 48000 -ac 1 "$M/_talk_$k.wav"
+  d=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$M/_talk_$k.wav")
+  t=$(python3 -c "print(round($t + ${GAPS[$k]}, 6))"); e=$(python3 -c "print(round($t + $d, 6))")
+  n=$((n + 1)); srt+="$n
+$(python3 -c "f=lambda x:'%02d:%02d:%02d,%03d'%(x//3600,x//60%60,x//1%60,round(x%1*1000)); print(f($t),'-->',f($e))")
+${TALK[$k]}
+
+"
+  t=$e; parts+=("$M/_gap_$k.wav" "$M/_talk_$k.wav")
+done
+ffmpeg -v error -y -f lavfi -i "anullsrc=r=48000:cl=mono" -t "${GAPS[5]}" "$M/_gap_5.wav"
+parts+=("$M/_gap_5.wav")
+printf "file '%s'\n" "${parts[@]}" > "$M/_talk.txt"
+ffmpeg -v error -y -f concat -safe 0 -i "$M/_talk.txt" -c:a pcm_s16le "$M/talk_src.wav"
+printf "%s" "$srt" > "$M/talk_src.srt"
+bits=""
+for k in $(seq 0 10); do bits+=",drawbox=x=$((60 + k * 160)):y=40:w=120:h=120:c=white:t=fill:enable='bitand(n\,$((1 << k)))'"; done
+len=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$M/talk_src.wav")
+ffmpeg -v error -y -f lavfi -i "testsrc2=s=1920x1080:r=30" -i "$M/talk_src.wav" -t "$len" \
+  -vf "drawbox=x=40:y=20:w=1780:h=160:c=black:t=fill$bits,format=yuv420p" \
+  -c:v libx264 -crf 16 -g 30 -c:a aac -b:a 192k -ac 2 "$M/talk_src.mp4"
+rm -f "$M"/_talk* "$M"/_gap_*
+
 # Optional real photos in ../assets/photos -> 8-second clips for 17_photo_demo.py
 if ls ../assets/photos/*.jpg >/dev/null 2>&1; then
   mkdir -p media_photos

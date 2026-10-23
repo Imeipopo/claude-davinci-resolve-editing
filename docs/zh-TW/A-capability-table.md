@@ -34,6 +34,7 @@ macOS 27.0.1／Resolve Studio 21.1.0.14。「實測」＝本 repo 輸出影片�
 | 聲道對應、單聲道／立體聲 | 能 | `SetSourceAudioChannelMapping`／`SetAudioMapping` | 19.7 | 實測 |
 | 插入、覆蓋、取代、適配填滿 | 繞路 | 合併 .drt／`ReplaceClip`／`SetSpeed` | 19.11 | 實測（覆蓋未單獨測） |
 | Render in Place | 繞路 | MarkIn/MarkOut 輸出該段再放回 | 19.10 | 實測 |
+| 跳剪（剪掉說話停頓、字幕平移） | 能 | silencedetect＋每段一個 `AppendToTimeline` 字典 | 22 | 實測（合成素材） |
 
 ## 特效
 
@@ -75,6 +76,9 @@ macOS 27.0.1／Resolve Studio 21.1.0.14。「實測」＝本 repo 輸出影片�
 | 停止卡住的輸出 | 不能（`StopRendering` 無效） | 重開 Resolve | 11.6 | 實測 |
 | 匯出／匯入時間軸 | 能 | `Export`／`ImportTimelineFromFile` | 9 | 實測 |
 | 從音樂抓切點 | Resolve 外做 | librosa＋分軌 | 16 | 實測＋經驗 |
+| 輸出後驗切點（±1 格） | Resolve 外做 | `tools/cut_check.py` | 16.10 | 實測 |
+| 交片前整支檢查（響度、黑閃、死空檔、黑邊…） | Resolve 外做 | `tools/delivery_qa.py` | 18.7 | 實測 |
+| 字幕檢查（讀速、時間、抽聽） | Resolve 外做 | `tools/caption_qa.py` | 19.15 | 實測（讀速門檻未驗證） |
 | 點畫面（必要時） | 能 | CGEvent 模擬滑鼠（AppleScript 的 click at 不可靠） | 1.11 | 實測 |
 | Speed Warp 慢動作 | 能 | `RetimeProcess`＋`MotionEstimation`，`SetSpeed` 要 `RippleTimeline` | 21.2 | 實測 |
 | 人聲分離 | 能 | `AudioVoiceIsolationEnabled`／`Amount` | 21.3 | 實測 |
