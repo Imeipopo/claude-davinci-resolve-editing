@@ -4,6 +4,10 @@ Rules for AI agents (Codex, Claude Code, others) that control DaVinci Resolve th
 Verified on macOS 27.0.1 + DaVinci Resolve Studio 21.1.0.14 unless marked otherwise. Windows/Linux/free edition untested.
 Evidence and examples: `docs/zh-TW/` (Chinese, primary) and `docs/en/`. Chapter numbers below refer to those docs.
 
+## MCP integration
+
+The upstream server is included unchanged as the `mcp/` Git submodule. Installation from this repo's root: `git submodule update --init --recursive`, then `python3 mcp/install.py --clients claude-code` for Claude Code (other clients: see `mcp/docs/install.md`). Generated `.mcp.json` is machine-local and ignored by Git. Use the connected MCP tools when that is the user's selected route; the direct Studio/Python rules below do not require switching transports. First read the real Resolve version and current project. Free-edition bridge evidence covers 21.0.3.7; free 21.1+ is outside that Python bridge path. The MCP editing/free workflow has not been live-tested by this guide.
+
 ## Ground rules
 
 1. **Render is truth.** API calls often return success with no visible effect, or None without an error. After every change, render an MP4 and inspect frames with ffmpeg before claiming it worked. (ch 0.4, 18)

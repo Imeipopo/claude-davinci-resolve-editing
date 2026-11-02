@@ -8,6 +8,12 @@ description: Drive DaVinci Resolve Studio from Python — build timelines, place
 Verified on macOS 27.0.1 + DaVinci Resolve Studio 21.1.0.14. Windows/Linux/free edition untested.
 The full rule list with evidence is in `AGENTS.md`; chapter docs are in `docs/zh-TW/` and `docs/en/`.
 
+## MCP mode
+
+This repo includes the upstream server as the `mcp/` Git submodule. Follow the root README to initialize it and run `python3 mcp/install.py --clients claude-code` from this repo's root. Start Claude Code from that same root, then use `/mcp` and a read-only Resolve version/project query to verify both connections. Read this repo's chapters for editing guidance and check the connected server's actual capabilities before acting.
+
+When the user is using MCP, keep that transport. The direct Studio/Python workflow below is an alternative, not an instruction to switch away from a working MCP connection. The free-edition bridge has upstream evidence on 21.0.3.7; free 21.1+ does not support that Python bridge path. Do not use the Studio `ResolvePython` commands on the free edition or claim this repo has live-tested the MCP/free workflow.
+
 ## Workflow
 
 1. Confirm Resolve Studio is running and External scripting = Local:

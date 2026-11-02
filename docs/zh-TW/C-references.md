@@ -40,7 +40,7 @@
 ## 授權
 
 - 本 repo：MIT（[LICENSE](../../LICENSE)）。
-- 引用 samuelgursky/davinci-resolve-mcp 的內容：MIT，版權聲明見 [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)。
+- 引用 samuelgursky/davinci-resolve-mcp 的內容及 `mcp/` 子模組：MIT，版權聲明見 [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md) 與 [MCP 授權原文](https://github.com/samuelgursky/davinci-resolve-mcp/blob/5e63c93ebb4d1e7f498b74d75db6ef50a12a43de/LICENSE)（本機位於 `mcp/LICENSE`）。
 - 整理自 Hao0321/video-autopilot-kit 的內容：MIT，版權聲明見 [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)。
 - `prompts/third-party/` 的提示詞中譯：版權屬各原作者，不適用本 repo 的 MIT，見 [THIRD_PARTY_NOTICES.md](../../THIRD_PARTY_NOTICES.md)。
 - DaVinci Resolve、Fusion 為 Blackmagic Design 的商標；本 repo 與 Blackmagic Design 無關。

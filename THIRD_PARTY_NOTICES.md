@@ -2,6 +2,8 @@
 
 This guide summarizes and cites knowledge from **davinci-resolve-mcp** (https://github.com/samuelgursky/davinci-resolve-mcp), commit 94c7a885d53f13be78522ce96561a9e9e21d64c5, used under the MIT License reproduced below. Entries derived from it are labelled "整理自 samuelgursky" in the docs.
 
+The upstream MCP server is also included as the `mcp/` Git submodule, initially pinned to commit `5e63c93ebb4d1e7f498b74d75db6ef50a12a43de`. The current revision is recorded by Git's submodule entry. Its code is maintained by the upstream authors, not authored by this guide. The original copyright and MIT license remain in `mcp/LICENSE`; run `git submodule update --init --recursive` to retrieve it. Generated local MCP client settings are not distributed.
+
 ```
 MIT License
 

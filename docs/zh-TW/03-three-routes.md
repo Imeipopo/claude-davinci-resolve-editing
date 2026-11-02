@@ -6,11 +6,11 @@
 
 | | A. 官方 MCP（21.1 內建） | B. 社群 MCP（samuelgursky） | C. AI 直接寫 .py 檔執行 |
 |---|---|---|---|
-| 安裝 | File > Setup AI Assistants | `npx davinci-resolve-mcp setup` 等，見其 README | 不用裝，用 ResolvePython |
+| 安裝 | File > Setup AI Assistants | 本 repo 初始化 `mcp/` 子模組後，從根目錄執行 `python3 mcp/install.py --clients claude-code` | 不用裝 MCP，用 ResolvePython |
 | 能力 | 腳本 API＋產生 LUT／DCTL | 腳本 API 全覆蓋＋離線改寫 .drp／.drt／.drx、卡節拍、Fusion 模板等 | 腳本 API＋你自己寫的任何東西（ffmpeg、numpy、Vision……） |
 | 長流程重跑 | 每次經過 AI 客戶端 | 有整合好的工作流程工具 | 腳本存成檔案，改一個數字重跑 |
 | 驗證 | 自己另外做 | 部分內建 | 自己寫（本教學的做法） |
-| 本 repo 實測 | 只讀了工具清單（1.8） | 未安裝 | 全部範例都是這條 |
+| 本 repo 實測 | 只讀了工具清單（1.8） | 已整合子模組；實際 MCP 剪輯流程未實測 | 全部範例都是這條 |
 
 ### 3.1 建議怎麼選
 
@@ -36,3 +36,5 @@ verify       (ffmpeg / PIL)           截格、量位置、比顏色
 ### 3.3 讓 AI 好好用這份教學
 
 - 結論：把這個 repo 放進專案或技能資料夾。Claude Code 讀 `SKILL.md`，Codex 讀 `AGENTS.md`。兩份都只列「實測通過」的規則，避免 AI 照著未驗證的說法做。
+
+選 B 路線時，可直接 `git clone --recurse-submodules https://github.com/Imeipopo/claude-davinci-resolve-editing.git`，從本 repo 根目錄完成 MCP 設定並啟動 Claude，文件與 MCP 就在同一個工作目錄。`SKILL.md` 與 `AGENTS.md` 的 MCP 小節列的是設定方式及未實測範圍；Studio 範例的實測結果不代表免費版也適用。版權與授權見[第三方聲明](../../THIRD_PARTY_NOTICES.md)。

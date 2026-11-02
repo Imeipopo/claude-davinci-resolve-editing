@@ -4,11 +4,11 @@
 
 ### 1.1 外部程式控制要用 Studio 版
 
-- 結論：從終端機（Resolve 外面）用程式控制 Resolve，要 DaVinci Resolve **Studio**。免費版只能在 Resolve 裡面的「工作區 > 腳本」選單或主控台執行腳本。
+- 結論：從終端機（Resolve 外面）直接用程式控制 Resolve，要 DaVinci Resolve **Studio**。免費版的內部腳本能力有版本限制；上游的 Python 橋接有免費版 21.0.3.7 成功紀錄，21.1 起不適用該橋接流程。
 - 驗證：官方文件（Developer/Scripting/README.md）＋整理自 samuelgursky，未實測（本 repo 只有 Studio）。
 - 確認：見 1.4 的連線測試，`scriptapp("Resolve")` 回傳 `None` 就是連不上。
 
-> 人類補充：samuelgursky 的工具另外做了一個「免費版也能用」的橋接方式，需要的話看他的 README「Free edition」一節。
+> MCP 整合：本 repo 已在 `mcp/` 納入 samuelgursky 的工具。先依[根目錄 README](../../README.md#快速開始)初始化子模組，在 repo 根目錄執行 `python3 mcp/install.py --clients claude-code`；免費版另需 `python3 mcp/scripts/install_resolve_bridge.py` 並在 Resolve 裡啟動橋接。版本限制以[上游 Free edition 說明](https://github.com/samuelgursky/davinci-resolve-mcp#free-edition-in-app-bridge)為準，本 repo 未實測免費版。
 
 ### 1.2 打開外部腳本權限
 
@@ -139,7 +139,7 @@ grep -n "def AddTransition" -A3 "/Library/Application Support/Blackmagic Design/
 
 ### 1.10 社群工具
 
-- [samuelgursky/davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp)：最完整，四百多個工具，包含離線改寫 .drt／.drx 檔、卡節拍、Fusion 模板製作。MIT 授權。本 repo 沒有安裝測試。
+- [samuelgursky/davinci-resolve-mcp](https://github.com/samuelgursky/davinci-resolve-mcp)：提供 Resolve MCP 工具，包含離線改寫 .drt／.drx 檔、卡節拍、Fusion 模板製作。MIT 授權，已以 `mcp/` 子模組納入本 repo；實際 MCP 剪輯流程未實測。
 - 它的 [docs/reference/api-limitations.md](https://github.com/samuelgursky/davinci-resolve-mcp/blob/main/docs/reference/api-limitations.md) 是目前最完整的「API 做不到什麼」清單，本教學多處引用。
 
 ### 1.11 真的需要點畫面時：用 CGEvent 模擬滑鼠
